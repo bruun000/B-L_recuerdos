@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuerdos Bruno&Lucia</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+        
+        body {
+            background-color: #ffe6e6; /* Fondo más bonito y suave */
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+            color: #cc0000;
+            font-size: 4em; /* Título más grande */
+            font-family: 'Dancing Script', cursive;
+            margin-top: 20px;
+        }
+        #contador {
+            text-align: center;
+            font-size: 2.5em; /* Contador más grande */
+            font-family: 'Dancing Script', cursive;
+            font-weight: bold;
+            color: #cc0000;
+            margin-bottom: 40px; /* Añade separación entre el contador y los botones */
+        }
+        .navbar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px; /* Añade separación entre el contador y el título */
+        }
+        .navbar a {
+            margin: 0 10px;
+            padding: 15px 30px; /* Botones más grandes */
+            background-color: #ffcccc;
+            color: #660000;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5em; /* Texto de los botones más grande */
+        }
+        .navbar a:hover {
+            background-color: #ff9999; /* Un tono más oscuro de rojo */
+        }
+        #list-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+        input[type="text"], input[type="submit"] {
+            font-size: 1.5em;
+            margin: 10px;
+        }
+        ul {
+            list-style-type: none;
+        }
+        li {
+            font-size: 1.5em;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bruno&Lucia</h1>
+    <div id="contador"></div>
+    
+    <div class="navbar">
+        <a href="index.html">Inicio</a>
+        <a href="galeria.html">Galería</a>
+        <a href="planes.html">Planes</a>
+        <a href="especial.html">Algo especial</a>
+    </div>
+    
+    <div id="list-container">
+        <h2>Para un futuro...</h2>
+        <form id="food-form">
+            <input type="text" id="food-input" placeholder="Nuevos planes">
+            <input type="submit" value="Añadir">
+        </form>
+        <ul id="food-list"></ul>
+    </div>
+
+    <script>
+        function actualizarContador() {
+            const fechaInicio = new Date('2023-11-16T00:00:00');
+            const ahora = new Date();
+            const diferencia = ahora - fechaInicio;
+
+            const segundos = Math.floor(diferencia / 1000);
+            const minutos = Math.floor(segundos / 60);
+            const horas = Math.floor(minutos / 60);
+            const dias = Math.floor(horas / 24);
+
+            const segundosRestantes = segundos % 60;
+            const minutosRestantes = minutos % 60;
+            const horasRestantes = horas % 24;
+
+            document.getElementById('contador').textContent = 
+                `${dias} días, ${horasRestantes} horas, ${minutosRestantes} minutos, ${segundosRestantes} segundos`;
+        }
+
+        setInterval(actualizarContador, 1000);
+        actualizarContador();
+
+        // Functionality for future plans list
+        const foodForm = document.getElementById('food-form');
+        const foodInput = document.getElementById('food-input');
+        const foodList = document.getElementById('food-list');
+
+        // Load food items from localStorage
+        function loadFoodItems() {
+            const foodItems = JSON.parse(localStorage.getItem('foodItems')) || [];
+            foodItems.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `<input type="checkbox" ${item.done ? 'checked' : ''}> ${item.name}`;
+                foodList.appendChild(li);
+            });
+        }
+
+        // Save food items to localStorage
+        function saveFoodItems() {
+            const foodItems = [];
+            foodList.querySelectorAll('li').forEach(li => {
+                const checkbox = li.querySelector('input[type="checkbox"]');
+                const name = li.textContent.trim();
+                foodItems.push({ name, done: checkbox.checked });
+            });
+            localStorage.setItem('foodItems', JSON.stringify(foodItems));
+        }
+
+        foodForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const foodItem = foodInput.value.trim();
+            if (foodItem) {
+                const li = document.createElement('li');
+                li.innerHTML = `<input type="checkbox"> ${foodItem}`;
+                foodList.appendChild(li);
+                foodInput.value = '';
+                saveFoodItems();
+            }
+        });
+
+        // Save changes when checkboxes are clicked
+        foodList.addEventListener('change', function() {
+            saveFoodItems();
+        });
+
+        loadFoodItems(); // Load food items when the page loads
+    </script>
+</body>
+</html>

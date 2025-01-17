@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuerdos Bruno&Lucia</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+        
+        body {
+            background-color: #ffe6e6; /* Fondo más bonito y suave */
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+            color: #cc0000;
+            font-size: 4em; /* Título más grande */
+            font-family: 'Dancing Script', cursive;
+            margin-top: 20px;
+        }
+        #contador {
+            text-align: center;
+            font-size: 2.5em; /* Contador más grande */
+            font-family: 'Dancing Script', cursive;
+            font-weight: bold;
+            color: #cc0000;
+            margin-bottom: 40px; /* Añade separación entre el contador y los botones */
+        }
+        .navbar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px; /* Añade separación entre el contador y el título */
+        }
+        .navbar a {
+            margin: 0 10px;
+            padding: 15px 30px; /* Botones más grandes */
+            background-color: #ffcccc;
+            color: #660000;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5em; /* Texto de los botones más grande */
+        }
+        .navbar a:hover {
+            background-color: #ff9999; /* Un tono más oscuro de rojo */
+        }
+        #image-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+        img {
+            max-width: 80%;
+            max-height: 400px;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bruno&Lucia</h1>
+    <div id="contador"></div>
+    
+  <div class="navbar">
+        <a href="index.html">Inicio</a>
+        <a href="galeria.html">Galería</a>
+	<a href="planes.html">Planes</a>
+        <a href="especial.html">Algo especial</a>
+    </div>
+    
+    <div id="image-container">
+        <img id="slideshow" src="">
+    </div>
+
+    <script>
+        function actualizarContador() {
+            const fechaInicio = new Date('2023-11-16T00:00:00');
+            const ahora = new Date();
+            const diferencia = ahora - fechaInicio;
+
+            const segundos = Math.floor(diferencia / 1000);
+            const minutos = Math.floor(segundos / 60);
+            const horas = Math.floor(minutos / 60);
+            const dias = Math.floor(horas / 24);
+
+            const segundosRestantes = segundos % 60;
+            const minutosRestantes = minutos % 60;
+            const horasRestantes = horas % 24;
+
+            document.getElementById('contador').textContent = 
+                `${dias} días, ${horasRestantes} horas, ${minutosRestantes} minutos, ${segundosRestantes} segundos`;
+        }
+
+        setInterval(actualizarContador, 1000);
+        actualizarContador();
+
+        // Slideshow functionality
+        const slideshowImage = document.getElementById('slideshow');
+        const imageFolder = 'galeria/'; // Carpeta donde están las imágenes
+        const imageFiles = [
+            'imagen2.jpg',
+            'imagen2.jpg',
+            'imagen3.jpg',
+	    'imagen4.jpg',
+            // Añade aquí el nombre de todas las imágenes en la carpeta "galeria"
+        ];
+        let currentImageIndex = 0;
+
+        function cambiarImagen() {
+            if (imageFiles.length > 0) {
+                slideshowImage.src = imageFolder + imageFiles[currentImageIndex];
+                currentImageIndex = (currentImageIndex + 1) % imageFiles.length;
+            }
+        }
+
+        setInterval(cambiarImagen, 15000); // Cambiar cada 15 segundos
+        cambiarImagen(); // Cambiar inmediatamente al cargar la página
+    </script>
+</body>
+</html>
